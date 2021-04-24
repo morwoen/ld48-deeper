@@ -3,38 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum EnemyState { Passive, Alert, Aware, Asleep}
 
-public class EnemyStateMachine
-{
-    public EnemyState enemyState = EnemyState.Passive;
-
-    public EnemyState GetEnemyState()
-    {
-        return enemyState;
-    }
-
-    public void SetPassiveState()
-    {
-        enemyState = EnemyState.Passive;
-    }
-
-    public void SetAlertState()
-    {
-        enemyState = EnemyState.Alert;
-    }
-
-    public void SetAwareState()
-    {
-        enemyState = EnemyState.Aware;
-    }
-
-    public void SetAsleepState()
-    {
-        enemyState = EnemyState.Asleep;
-    }
-
-}
 public class Patrol : MonoBehaviour
 {
     public Transform[] waypoints;
@@ -77,7 +46,4 @@ public class Patrol : MonoBehaviour
             print("caught");
         }
     }
-
-
-
 }
