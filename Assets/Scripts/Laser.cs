@@ -47,6 +47,10 @@ public class Laser : MonoBehaviour
         lazor.SetPosition(1, hit.point);
         beamEnd.transform.position = hit.point;
         beamEnd.SetActive(true);
+
+        if (hit.collider.CompareTag("Player")) {
+          // TODO: do stuff
+        }
       }
     } else {
       lazor.SetPosition(1, transform.up * 5000);
