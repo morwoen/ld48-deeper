@@ -1158,7 +1158,7 @@ GameObject:
   - component: {fileID: 6079057272150255906}
   m_Layer: 0
   m_Name: 3rd Person Player with Cam
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
