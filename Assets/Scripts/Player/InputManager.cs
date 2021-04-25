@@ -10,7 +10,7 @@ public class InputManager : MonoBehaviour
     public bool jumpInput { get; private set; }
     public bool crouchInput { get; private set; }
 
-    public Vector2 moveInputDirection
+    public Vector2 movementInput
     {
         get;
         private set;
@@ -20,7 +20,7 @@ public class InputManager : MonoBehaviour
     {
         input = new PlayerInput();
         input.PlayerControls.Locomotion.performed += ctx => {
-            moveInputDirection = ctx.ReadValue<Vector2>().normalized;
+            movementInput = ctx.ReadValue<Vector2>().normalized;
         };
         input.PlayerControls.Run.performed += ctx => runInput = ctx.ReadValueAsButton();    //TODO: Remove run input if we don't implement running
         input.PlayerControls.Jump.performed += ctx => jumpInput = ctx.ReadValueAsButton();
@@ -35,10 +35,5 @@ public class InputManager : MonoBehaviour
     void OnDisable()
     {
         input.PlayerControls.Disable();
-    }
-
-    private void Update()
-    {
-        Debug.Log($"jumpInput:{jumpInput}, crouchInput:{crouchInput}");
     }
 }

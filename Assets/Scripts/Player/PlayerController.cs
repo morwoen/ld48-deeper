@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public float speed = 6f;
     [SerializeField] public float gravity = -9.81f;
     [SerializeField] public float jumpHeight = 3f;
-    [SerializeField] public float turnTime = 0.1f;
     [SerializeField] public float turnSpeed = 500f;
 
     [HideInInspector]
@@ -68,21 +67,25 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (inputManager.jumpInput && controller.isGrounded) {
+            Debug.Log("!!!Should be jumping!!!");
+        }
+
+        Debug.Log($"isGrounded: {controller.isGrounded}");
+        Debug.Log($"jumpInput: {inputManager.jumpInput}");
+
         fsm.OnUpdate();
-        Debug.Log("FSM Current State: " + fsm.activeState);
+        //Debug.Log("FSM Current State: " + fsm.activeState);
         //HandleJump();
-        
     }
 
     private void FixedUpdate()
     {
-        //this.MoveDirection = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized;
         InitialiseMoveDirection();
         HandleGravity();
         SetMoveDirectionRelativeToCamera();
-        //HandleMovement();
-        //HandleCrouch();
         fsm.OnFixedUpdate();
+
     }
 
     public float currentSpeed
@@ -91,49 +94,9 @@ public class PlayerController : MonoBehaviour
         private set;
     }
 
-    #region the bin
-    /*    private void HandleJump()
-        {
-    *//*        //Debug.Log($"Jump Input: {jumpInput}");
-            if (inputManager.jumpInput && controller.isGrounded)
-            {
-                // transition from moving to jumping
-                velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
-            }*//*
-        }
-
-        public void HandleMovement()
-        {
-
-    *//*
-            if (canMove && inputManager.moveInputDirection.magnitude > 0)
-            {
-                Debug.Log("Trying to do movement");
-                Vector3 direction = new Vector3(inputManager.moveInputDirection.x, 0, inputManager.moveInputDirection.y).normalized;
-                float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
-                float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnTime);
-                transform.rotation = Quaternion.Euler(0f, angle, 0f);
-                MoveDirection = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized;
-                controller.Move(MoveDirection * speed * Time.deltaTime);
-            }*//*
-        }
-
-        private void HandleCrouch()
-        {
-            *//*if (inputManager.crouchInput)
-            {
-                transform.localScale = new Vector3(transform.localScale.x, originalScale / 2, transform.localScale.z);
-            }
-            else
-            {
-                transform.localScale = new Vector3(transform.localScale.x, originalScale, transform.localScale.z);
-            }*//*
-        }*/
-    #endregion
-
     public void InitialiseMoveDirection()
     {
-        MoveDirection = Vector3.forward * inputManager.moveInputDirection.y + Vector3.right * inputManager.moveInputDirection.x;
+        MoveDirection = Vector3.forward * inputManager.movementInput.y + Vector3.right * inputManager.movementInput.x;
         MoveDirection.Normalize();
     }
 
@@ -154,6 +117,6 @@ public class PlayerController : MonoBehaviour
         {
             velocity.y = -3f;
         }
-        Debug.Log($"Controller is grounded bool: {controller.isGrounded}");
+        //Debug.Log($"Controller is grounded bool: {controller.isGrounded}");
     }
 }

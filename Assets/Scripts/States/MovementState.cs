@@ -25,15 +25,11 @@ public class MovementState : StateBase
     }
 
     public override void OnFixedUpdate() {
-        if (player.canMove && inputManager.moveInputDirection.magnitude > 0)
+        if (player.canMove && inputManager.movementInput.magnitude > 0)
         {
-            /*Vector3 direction = new Vector3(inputManager.moveInputDirection.x, 0, inputManager.moveInputDirection.y).normalized;
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + player.cameraTransform.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(player.transform.eulerAngles.y, targetAngle, ref player.turnSmoothVelocity, player.turnTime);
-            player.transform.rotation = Quaternion.Euler(0f, angle, 0f);*/
-            //float y = player.MoveDirection.y;
-           
             player.controller.Move(player.MoveDirection * player.speed * Time.deltaTime);
+
+
             //rotates the player model to the move direction
             Quaternion rotationToMoveDirection;
             if (player.MoveDirection.magnitude > 0)
