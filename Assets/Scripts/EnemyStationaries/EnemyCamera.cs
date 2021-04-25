@@ -23,6 +23,8 @@ public class EnemyCamera : MonoBehaviour
   private Vector3 currentLookLocation;
   private int nextLookLocation;
   private GameObject player;
+  private GlobalAlertSystem gas;
+  private bool playerDetected = false;
 
   void Start() {
     nextLookLocation = 0;
@@ -37,9 +39,31 @@ public class EnemyCamera : MonoBehaviour
 
     player = FindObjectOfType<PlayerMovement>().gameObject;
     beam = GetComponentInChildren<SpotlightRenderer>();
+    gas = FindObjectOfType<GlobalAlertSystem>();
   }
 
   void Update() {
+    // Collision detection
+    var detectionAngle = Mathf.Atan2(detectionRadius, 1) * Mathf.Rad2Deg;
+    var directionToPlayer = player.transform.position - beam.transform.position;
+    if (Vector3.Angle(directionToPlayer, currentLookLocation) < detectionAngle && directionToPlayer.magnitude <= beam.MaxDistance) {
+      RaycastHit hit;
+      if (Physics.Raycast(beam.transform.position, directionToPlayer, out hit, beam.MaxDistance)) {
+        if (hit.collider && hit.collider.CompareTag("Player")) {
+          if (!playerDetected) {
+            gas?.IncreaseAlertLevel();
+            playerDetected = true;
+          }
+        } else {
+          playerDetected = false;
+        }
+      } else {
+        playerDetected = false;
+      }
+    } else {
+      playerDetected = false;
+    }
+
     if (lookAtLocations.Length > 0) {
       var currentTargetLocation = lookAtLocations[nextLookLocation];
 
@@ -54,18 +78,6 @@ public class EnemyCamera : MonoBehaviour
       } else {
         cameraObject.transform.LookAt(currentLookLocation);
       }
-    } else {
-      currentLookLocation = cameraObject.transform.forward;
-      if (inverse) {
-        currentLookLocation = -currentLookLocation;
-      }
-    }
-
-    // Collision detection
-    var detectionAngle = Mathf.Atan2(detectionRadius, 1) * Mathf.Rad2Deg;
-    var directionToPlayer = player.transform.position - beam.transform.position;
-    if (Vector3.Angle(directionToPlayer, currentLookLocation) < detectionAngle && directionToPlayer.magnitude <= beam.MaxDistance) {
-      Debug.Log("Player detected");
     }
   }
 }

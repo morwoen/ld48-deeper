@@ -17,6 +17,8 @@ public class Laser : MonoBehaviour
 
   private Vector3 currentLookLocation;
   private int nextLookLocation;
+  private GlobalAlertSystem gas;
+  private bool playerDetected = false;
 
   void Start() {
     lazor = gameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
@@ -26,6 +28,7 @@ public class Laser : MonoBehaviour
     beamEnd.SetActive(false);
     currentLookLocation = transform.up;
     nextLookLocation = 0;
+    gas = FindObjectOfType<GlobalAlertSystem>();
   }
 
   void Update() {
@@ -49,12 +52,20 @@ public class Laser : MonoBehaviour
         beamEnd.SetActive(true);
 
         if (hit.collider.CompareTag("Player")) {
-          // TODO: do stuff
+          if (!playerDetected) {
+            gas?.IncreaseAlertLevel();
+            playerDetected = true;
+          }
+        } else {
+          playerDetected = false;
         }
+      } else {
+        playerDetected = false;
       }
     } else {
       lazor.SetPosition(1, currentLookLocation * 5000);
       beamEnd.SetActive(false);
+      playerDetected = false;
     }
   }
 }
