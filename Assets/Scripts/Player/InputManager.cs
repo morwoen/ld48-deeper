@@ -36,4 +36,9 @@ public class InputManager : MonoBehaviour
     {
         input.PlayerControls.Disable();
     }
+
+    private void Update()
+    {
+        Debug.Log($"jumpInput:{jumpInput}, crouchInput:{crouchInput}");
+    }
 }

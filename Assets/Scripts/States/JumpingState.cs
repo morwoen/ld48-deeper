@@ -6,7 +6,7 @@ public class JumpingState : StateBase
     private PlayerController player;
     private InputManager inputManager;
 
-    public JumpingState(PlayerController player) : base(false)
+    public JumpingState(PlayerController player) : base(true)
     {
         this.player = player;
         inputManager = player.GetComponent<InputManager>();

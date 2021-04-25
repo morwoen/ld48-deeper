@@ -38,8 +38,8 @@ public class Patrol : MonoBehaviour
         //agent.destination = waypoints[destPoint].position;
         agent.SetDestination(waypoints[destPoint].position);
         destPoint = (destPoint + 1) % waypoints.Length;
-        Debug.Log($"DestinationIndex: {destPoint}");
-        Debug.Log($"waypoint: {waypoints[destPoint].position}");
+        //Debug.Log($"DestinationIndex: {destPoint}");
+        //Debug.Log($"waypoint: {waypoints[destPoint].position}");
 
     }
 
