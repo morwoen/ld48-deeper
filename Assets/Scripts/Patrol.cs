@@ -17,7 +17,6 @@ public class Patrol : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         agent.autoBraking = false;
-
     }
 
     // Update is called once per frame
@@ -25,7 +24,9 @@ public class Patrol : MonoBehaviour
     {
         //Checks AI pathfinding for distance to next target
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
+        {
             GotoNextPoint();
+        }
 
     }
 
@@ -34,8 +35,11 @@ public class Patrol : MonoBehaviour
         if (waypoints.Length == 0)
             return;
 
-        agent.destination = waypoints[destPoint].position;
+        //agent.destination = waypoints[destPoint].position;
+        agent.SetDestination(waypoints[destPoint].position);
         destPoint = (destPoint + 1) % waypoints.Length;
+        Debug.Log($"DestinationIndex: {destPoint}");
+        Debug.Log($"waypoint: {waypoints[destPoint].position}");
 
     }
 
