@@ -1,18 +1,20 @@
-﻿/*using UnityEngine;
+﻿using UnityEngine;
 using FSM;
 
 public class JumpingState : StateBase
 {
-  private PlayerController player;
-  private JumpController controller;
+    private PlayerController player;
+    private InputManager inputManager;
 
-  public JumpingState(PlayerController player) : base(false) {
-    controller = player.GetComponent<JumpController>();
-    this.player = player;
-  }
+    public JumpingState(PlayerController player) : base(false)
+    {
+        this.player = player;
+        inputManager = player.GetComponent<InputManager>();
+    }
 
-  public override void OnFixedUpdate() {
-    player.SetMove(Vector3.up * Mathf.Abs(controller.jumpForce * Physics.gravity.y), Vector3.up);
-    controller.DidJump();
-  }
-}*/
+    public override void OnFixedUpdate()
+    {
+        player.velocity.y = Mathf.Sqrt(player.jumpHeight * -2 * player.gravity);
+        fsm.StateCanExit();
+    }
+}

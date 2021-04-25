@@ -22,7 +22,7 @@ public class InputManager : MonoBehaviour
         input.PlayerControls.Locomotion.performed += ctx => {
             moveInputDirection = ctx.ReadValue<Vector2>().normalized;
         };
-        input.PlayerControls.Run.performed += ctx => runInput = ctx.ReadValueAsButton();
+        input.PlayerControls.Run.performed += ctx => runInput = ctx.ReadValueAsButton();    //TODO: Remove run input if we don't implement running
         input.PlayerControls.Jump.performed += ctx => jumpInput = ctx.ReadValueAsButton();
         input.PlayerControls.Crouch.performed += ctx => crouchInput = ctx.ReadValueAsButton();
     }

@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public float turnTime = 0.1f;
     // public float turnSpeed = 0.1f;
 
-    private Vector3 velocity;
+    public Vector3 velocity;
     float turnSmoothVelocity;
     private StateMachine fsm;
 
@@ -33,6 +33,18 @@ public class PlayerController : MonoBehaviour
 
         fsm = new StateMachine(this);
         fsm.AddState("Movement", new MovementState(this));
+
+        fsm.AddState("Jumping", new JumpingState(this));
+
+        fsm.AddTransition(new Transition(
+            "Movement",
+            "Jumping",
+            (transition) => inputManager.jumpInput && controller.isGrounded
+            ));
+
+        fsm.AddTransition(new Transition(
+            "Jumping",
+            "Movement"));
 
         // This configures the entry point of the state machine
         fsm.SetStartState("Movement");
@@ -59,12 +71,13 @@ public class PlayerController : MonoBehaviour
         get;
         private set;
     }
-    
+
     private void HandleJump()
     {
         //Debug.Log($"Jump Input: {jumpInput}");
         if (inputManager.jumpInput && controller.isGrounded)
         {
+            // transition from moving to jumping
             velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
         }
     }

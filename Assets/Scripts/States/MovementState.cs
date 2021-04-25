@@ -4,16 +4,11 @@ using FSM;
 public class MovementState : StateBase
 {
   private PlayerController player;
-  private float turnSmoothVelocity;
-  private Transform cam;
-  private InputManager inputManager;
-  private Vector3 axis;
+  //private InputManager inputManager;
 
   public MovementState(PlayerController player) : base(false) {
     this.player = player;
-    cam = Camera.main.transform;
-    inputManager = player.GetComponent<InputManager>();
-    axis = Vector3.right + Vector3.forward;
+    //inputManager = player.GetComponent<InputManager>();
   }
 
     public override void OnEnter()
