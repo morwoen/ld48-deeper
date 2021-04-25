@@ -53,7 +53,7 @@ public class Laser : MonoBehaviour
         }
       }
     } else {
-      lazor.SetPosition(1, transform.up * 5000);
+      lazor.SetPosition(1, currentLookLocation * 5000);
       beamEnd.SetActive(false);
     }
   }
