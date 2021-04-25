@@ -37,7 +37,7 @@ public class EnemyCamera : MonoBehaviour
       currentLookLocation = lookAtLocations[0].position;
     }
 
-    player = FindObjectOfType<PlayerMovement>().gameObject;
+    player = FindObjectOfType<PlayerController>().gameObject;
     beam = GetComponentInChildren<SpotlightRenderer>();
     gas = FindObjectOfType<GlobalAlertSystem>();
   }
