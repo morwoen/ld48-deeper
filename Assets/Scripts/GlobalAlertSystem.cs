@@ -8,15 +8,22 @@ public class GlobalAlertSystem : MonoBehaviour
   {
     get;
     private set;
-  } = 5;
+  } = 0;
 
   [SerializeField]
   private int maxAlertLevel = 5;
-  private int minAlertLevel = 1;
+  private int minAlertLevel = 0;
 
   [SerializeField]
   private float baseTimer = 5f;
   private float cooldown = 0f;
+
+  private StarsManager stars;
+
+  void Start() {
+    stars = FindObjectOfType<StarsManager>();
+    stars?.UpdateStars(alertLevel);
+  }
 
   void Update() {
     if (cooldown > 0) {
@@ -26,6 +33,7 @@ public class GlobalAlertSystem : MonoBehaviour
     if (cooldown <= 0 && alertLevel > minAlertLevel) {
       alertLevel -= 1;
       cooldown = baseTimer * alertLevel;
+      stars?.UpdateStars(alertLevel);
       Debug.Log("AlertLevelDown " + alertLevel);
     }
   }
@@ -33,6 +41,7 @@ public class GlobalAlertSystem : MonoBehaviour
   public void IncreaseAlertLevel() {
     if (alertLevel < maxAlertLevel) {
       alertLevel += 1;
+      stars?.UpdateStars(alertLevel);
     }
     cooldown = baseTimer * alertLevel;
     Debug.Log("AlertLevelUp " + alertLevel);
