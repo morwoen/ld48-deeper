@@ -213,6 +213,7 @@ GameObject:
   - component: {fileID: 6079057270841629034}
   - component: {fileID: 5713884625916375608}
   - component: {fileID: 4799187770699676185}
+  - component: {fileID: 2966549056982065045}
   m_Layer: 0
   m_Name: Capsule Player
   m_TagString: Player
@@ -302,6 +303,20 @@ MonoBehaviour:
   startingHealth: 100
   regenPerSecond: 5
   regenDelay: 5
+--- !u!114 &2966549056982065045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6079057270841629035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 255a7968805ce2a48b7e9f1f9f2bb226, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentCheckpointPosition: {x: 0, y: 0, z: 0}
+  currentCheckpointRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &6079057270933133088
 GameObject:
   m_ObjectHideFlags: 0
