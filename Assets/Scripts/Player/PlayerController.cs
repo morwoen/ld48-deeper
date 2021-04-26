@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     public CharacterController controller;
     public InputManager inputManager;
 
+    [SerializeField] public Animator animator;
+
     [SerializeField] public float speed = 6f;
     [SerializeField] public float gravity = -9.81f;
     [SerializeField] public float jumpHeight = 3f;
@@ -95,6 +97,11 @@ public class PlayerController : MonoBehaviour
     {
         if (controller.isGrounded && velocity.y < 0) {
           velocity.y = 0;
+          animator.SetBool("IsGrounded", true);
+        }
+        if (!controller.isGrounded)
+        {
+            animator.SetBool("IsGrounded", false);
         }
 
         velocity.y += gravity * Time.deltaTime;
