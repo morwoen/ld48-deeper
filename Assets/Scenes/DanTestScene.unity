@@ -1579,6 +1579,7 @@ GameObject:
   - component: {fileID: 1675849655}
   - component: {fileID: 1675849654}
   - component: {fileID: 1675849653}
+  - component: {fileID: 1675849656}
   m_Layer: 0
   m_Name: Capsule Player
   m_TagString: Untagged
@@ -1600,11 +1601,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 1675849654}
   cameraTransform: {fileID: 77727083}
+  inputManager: {fileID: 0}
   speed: 6
   gravity: -9.81
   jumpHeight: 5
-  turnSpeed: 0.1
-  turnTime: 0.1
+  turnSpeed: 500
+  velocity: {x: 0, y: 0, z: 0}
+  turnSmoothVelocity: 0
+  canMove: 0
+  toggleCrouch: 0
+  originalScale: 0
+  MoveDirection: {x: 0, y: 0, z: 0}
 --- !u!143 &1675849654
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1620,7 +1627,7 @@ CharacterController:
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_SkinWidth: 0.005
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &1675849655
@@ -1638,6 +1645,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1675849656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1675849652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a74608cf94e5c34f93ae383f9f04e2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2047503428
 GameObject:
   m_ObjectHideFlags: 0
@@ -1715,7 +1734,7 @@ MonoBehaviour:
     m_DecelTime: 0.1
     m_InputAxisName: Mouse Y
     m_InputAxisValue: 0
-    m_InvertInput: 0
+    m_InvertInput: 1
     m_MinValue: 0
     m_MaxValue: 1
     m_Wrap: 0
@@ -1739,7 +1758,7 @@ MonoBehaviour:
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
     m_InputAxisValue: 0
-    m_InvertInput: 1
+    m_InvertInput: 0
     m_MinValue: -180
     m_MaxValue: 180
     m_Wrap: 1
@@ -1886,7 +1905,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2099225087}
-  m_LocalRotation: {x: 0.11391546, y: 1.156327e-17, z: -1.9690075e-17, w: 0.99349046}
+  m_LocalRotation: {x: 0.113915466, y: -0.0000000074020816, z: 8.4873647e-10, w: 0.99349046}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:

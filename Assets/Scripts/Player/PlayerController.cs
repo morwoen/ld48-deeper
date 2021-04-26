@@ -3,112 +3,105 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using FSM;
 
-public class PlayerController : MonoBehaviour {
-
-    public PlayerInput input;
+public class PlayerController : MonoBehaviour
+{
     public CharacterController controller;
-    public Transform cameraTransform;
+    public InputManager inputManager;
 
-    public float speed = 6f;
-    public float gravity = -9.81f;
-    public float jumpHeight = 3f;
-    public float turnSpeed = 0.1f;
-    public float turnTime = 0.1f;
+    [SerializeField] public float speed = 6f;
+    [SerializeField] public float gravity = -9.81f;
+    [SerializeField] public float jumpHeight = 3f;
+    [SerializeField] public float turnSpeed = 500f;
 
-    private Vector3 velocity;
-    float turnSmoothVelocity;
+    [HideInInspector]
+    public Vector3 velocity;
+    public float turnSmoothVelocity;
+    private StateMachine fsm;
 
-    Vector2 moveInputDirection;
-    bool moveInput;
-    bool runInput;
-    bool jumpInput;
-    bool crouchInput;
+    public bool canMove;
+    public bool toggleCrouch;
 
-    float originalScale;
+    public float originalScale;
 
-    void Awake() {
-        input = new PlayerInput();
-        input.PlayerControls.Locomotion.performed += ctx => {
-            moveInputDirection = ctx.ReadValue<Vector2>();
-            moveInputDirection = ctx.ReadValue<Vector2>();
-            moveInput = moveInputDirection.x != 0 || moveInputDirection.y != 0;
-        };
-        input.PlayerControls.Run.performed += ctx => runInput = ctx.ReadValueAsButton();
-        input.PlayerControls.Jump.performed += ctx => jumpInput = ctx.ReadValueAsButton();
-        input.PlayerControls.Crouch.performed += ctx => crouchInput = ctx.ReadValueAsButton();
-
-    }
+    public Vector3 MoveDirection;
 
     void Start()
     {
-        //animator = GetComponent<Animator>();
-        originalScale = transform.localScale.y;
+        originalScale = transform.localScale.y; // TODO: Implement proper crouching
+
+        inputManager = GetComponent<InputManager>();
+
+        fsm = new StateMachine(this);
+        fsm.AddState("Movement", new MovementState(this));
+
+        #region JUMPING
+        fsm.AddState("Jumping", new JumpingState(this));
+        fsm.AddTransition(new Transition(
+            "Movement",
+            "Jumping",
+            (transition) => inputManager.jumpInput && controller.isGrounded
+            ));
+        fsm.AddTransition(new Transition(
+            "Jumping",
+            "Movement"));
+        #endregion
+        #region CROUCHING
+        fsm.AddState("Crouching", new CrouchingState(this));
+        fsm.AddTransition(new Transition(
+            "Movement",
+            "Crouching",
+            (transition) => inputManager.crouchInput
+            ));
+        fsm.AddTransition(new Transition(
+            "Crouching",
+            "Movement"));
+        #endregion
+        // This configures the entry point of the state machine
+        fsm.SetStartState("Movement");
+        // Initialises the state machine and must be called before OnLogic() is called
+        fsm.OnEnter();
     }
 
     void Update()
     {
+        fsm.OnUpdate();
+        Debug.Log("FSM Current State: " + fsm.activeState);
+        //Debug.Log($"isGrounded: {controller.isGrounded}");
+        //Debug.Log($"jumpInput: {inputManager.jumpInput}");
+    }
+
+    private void FixedUpdate()
+    {
+        InitialiseMoveDirection();
         HandleGravity();
-        HandleJump();
-        HandleMovement();
+        fsm.OnFixedUpdate();
+
+        controller.Move(MoveDirection * Time.fixedDeltaTime);
     }
 
-    private void HandleJump()
+    public float currentSpeed
     {
-        //Debug.Log($"Jump Input: {jumpInput}");
-        if(jumpInput && controller.isGrounded)
-        {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
-        }
+        get;
+        private set;
     }
 
-    void OnEnable()
+    public void InitialiseMoveDirection()
     {
-        input.PlayerControls.Enable();
-    }
-
-    void OnDisable()
-    {
-        input.PlayerControls.Disable();
-    }
-
-
-    void HandleMovement()
-    {
-        if (moveInput)
-        {
-            // animator.SetBool(isWalking, true);
-            Vector3 direction = new Vector3(moveInputDirection.x, 0, moveInputDirection.y).normalized;
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnTime);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
-            Vector3 moveDir = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized;
-            controller.Move(moveDir * speed * Time.deltaTime);
-        }
-        HandleCrouch();
-    }
-
-    private void HandleCrouch()
-    {
-        
-        if (crouchInput)
-        {
-            transform.localScale = new Vector3(transform.localScale.x, originalScale/2, transform.localScale.z);
-        }
-        else
-        {
-            transform.localScale = new Vector3(transform.localScale.x, originalScale, transform.localScale.z);
-        }
+        MoveDirection = Vector3.zero;
     }
 
     void HandleGravity()
     {
-        float deltaTime = Time.deltaTime;
-        velocity.y += gravity * deltaTime;
-        controller.Move(velocity * deltaTime);
-        if (controller.isGrounded)
-        {
-            velocity.y = -3f;
+        if (controller.isGrounded && velocity.y < 0) {
+          velocity.y = 0;
         }
-    }
+
+        velocity.y += gravity * Time.fixedDeltaTime;
+
+        MoveDirection.y = velocity.y;
+
+        //Debug.Log($"Controller is grounded bool: {controller.isGrounded}");
+  }
 }
