@@ -66,19 +66,18 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        InitialiseMoveDirection();
+        HandleGravity();
         fsm.OnUpdate();
         Debug.Log("FSM Current State: " + fsm.activeState);
         //Debug.Log($"isGrounded: {controller.isGrounded}");
         //Debug.Log($"jumpInput: {inputManager.jumpInput}");
+        controller.Move(MoveDirection * Time.deltaTime);
     }
 
     private void FixedUpdate()
     {
-        InitialiseMoveDirection();
-        HandleGravity();
         fsm.OnFixedUpdate();
-
-        controller.Move(MoveDirection * Time.fixedDeltaTime);
     }
 
     public float currentSpeed
@@ -98,7 +97,7 @@ public class PlayerController : MonoBehaviour
           velocity.y = 0;
         }
 
-        velocity.y += gravity * Time.fixedDeltaTime;
+        velocity.y += gravity * Time.deltaTime;
 
         MoveDirection.y = velocity.y;
 

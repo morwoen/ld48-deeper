@@ -12,7 +12,7 @@ public class JumpingState : StateBase
         inputManager = player.GetComponent<InputManager>();
     }
 
-    public override void OnFixedUpdate()
+    public override void OnUpdate()
     {
         player.velocity.y = Mathf.Sqrt(player.jumpHeight * -2 * player.gravity);
         fsm.StateCanExit();

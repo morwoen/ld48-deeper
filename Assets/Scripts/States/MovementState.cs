@@ -23,7 +23,7 @@ public class MovementState : StateBase
         player.canMove = false;
     }
 
-    public override void OnFixedUpdate() {
+    public override void OnUpdate() {
         if (player.canMove && inputManager.movementInput.magnitude > 0)
         {
             player.MoveDirection.x = inputManager.movementInput.x * player.speed;
