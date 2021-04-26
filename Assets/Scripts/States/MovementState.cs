@@ -32,8 +32,10 @@ public class MovementState : StateBase
             {
                 SetMoveDirectionRelativeToCamera();
                 SetRotationBasedOnMoveDirection();
+                
             }
         }
+        UpdateAnimator();
     }
 
     private void SetMoveDirectionRelativeToCamera()
@@ -52,6 +54,12 @@ public class MovementState : StateBase
         Quaternion rotationToMoveDirection = Quaternion.LookRotation(player.MoveDirection);
         rotationToMoveDirection.x = 0; rotationToMoveDirection.z = 0;   // this shouldn't be necessary once we have the player models in(?)
         player.transform.rotation = Quaternion.RotateTowards(player.transform.rotation, rotationToMoveDirection, player.turnSpeed * Time.deltaTime);
+    }
 
+    private void UpdateAnimator()
+    {
+        float currentSpeed = player.speed * inputManager.movementInput.magnitude / player.speed;
+        Debug.Log($"current speed: {currentSpeed}");
+        player.animator.SetFloat("MovementSpeed", currentSpeed);
     }
 }

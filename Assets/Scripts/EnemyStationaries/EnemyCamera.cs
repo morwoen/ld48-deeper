@@ -25,6 +25,7 @@ public class EnemyCamera : MonoBehaviour
   private GameObject player;
   private GlobalAlertSystem gas;
   private bool playerDetected = false;
+  private AudioSource audioSource;
 
   void Start() {
     nextLookLocation = 0;
@@ -40,6 +41,7 @@ public class EnemyCamera : MonoBehaviour
     player = FindObjectOfType<PlayerController>().gameObject;
     beam = GetComponentInChildren<SpotlightRenderer>();
     gas = FindObjectOfType<GlobalAlertSystem>();
+    audioSource = GetComponent<AudioSource>();
   }
 
   void Update() {
@@ -52,6 +54,7 @@ public class EnemyCamera : MonoBehaviour
         if (hit.collider && hit.collider.CompareTag("Player")) {
           if (!playerDetected) {
             gas?.IncreaseAlertLevel();
+            audioSource?.Play();
             playerDetected = true;
           }
         } else {

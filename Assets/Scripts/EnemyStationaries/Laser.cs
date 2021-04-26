@@ -19,6 +19,7 @@ public class Laser : MonoBehaviour
   private int nextLookLocation;
   private GlobalAlertSystem gas;
   private bool playerDetected = false;
+  private AudioSource audioSource;
 
   void Start() {
     lazor = gameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
@@ -29,6 +30,7 @@ public class Laser : MonoBehaviour
     currentLookLocation = transform.up;
     nextLookLocation = 0;
     gas = FindObjectOfType<GlobalAlertSystem>();
+    audioSource = GetComponent<AudioSource>();
   }
 
   void Update() {
@@ -54,6 +56,7 @@ public class Laser : MonoBehaviour
         if (hit.collider.CompareTag("Player")) {
           if (!playerDetected) {
             gas?.IncreaseAlertLevel();
+            audioSource?.Play();
             playerDetected = true;
           }
         } else {
