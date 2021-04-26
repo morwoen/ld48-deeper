@@ -86,6 +86,7 @@ public class PlayerController : MonoBehaviour
         SetMoveDirectionRelativeToCamera();
         fsm.OnFixedUpdate();
 
+        controller.Move(MoveDirection * Time.fixedDeltaTime);
     }
 
     public float currentSpeed
@@ -96,8 +97,7 @@ public class PlayerController : MonoBehaviour
 
     public void InitialiseMoveDirection()
     {
-        MoveDirection = Vector3.forward * inputManager.movementInput.y + Vector3.right * inputManager.movementInput.x;
-        MoveDirection.Normalize();
+        MoveDirection = Vector3.zero;
     }
 
     public void SetMoveDirectionRelativeToCamera()
@@ -110,13 +110,14 @@ public class PlayerController : MonoBehaviour
 
     void HandleGravity()
     {
-        float deltaTime = Time.deltaTime;
-        velocity.y += gravity * deltaTime;
-        controller.Move(velocity * deltaTime);
-        if (controller.isGrounded && velocity.y < 0)
-        {
-            velocity.y = -3f;
+        if (controller.isGrounded && velocity.y < 0) {
+          velocity.y = 0;
         }
+
+        velocity.y += gravity * Time.fixedDeltaTime;
+
+        MoveDirection.y = velocity.y;
+
         //Debug.Log($"Controller is grounded bool: {controller.isGrounded}");
-    }
+  }
 }

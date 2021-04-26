@@ -27,8 +27,8 @@ public class MovementState : StateBase
     public override void OnFixedUpdate() {
         if (player.canMove && inputManager.movementInput.magnitude > 0)
         {
-            player.controller.Move(player.MoveDirection * player.speed * Time.deltaTime);
-
+            player.MoveDirection.x = inputManager.movementInput.x * player.speed;
+            player.MoveDirection.z = inputManager.movementInput.y * player.speed;
 
             //rotates the player model to the move direction
             Quaternion rotationToMoveDirection;
