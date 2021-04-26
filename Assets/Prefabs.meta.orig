@@ -1,5 +1,9 @@
 fileFormatVersion: 2
-guid: 8c658538a50e761408a8c6c2f1ecb9a4
+<<<<<<< HEAD
+guid: 07d4c7459443afe45b974bc99dc394e8
+=======
+guid: 79ee8ef650a975d4696ffe0089a92bea
+>>>>>>> Player-Character-WIP
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
