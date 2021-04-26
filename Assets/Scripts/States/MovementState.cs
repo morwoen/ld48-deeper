@@ -45,8 +45,13 @@ public class MovementState : StateBase
 
     private void SetRotationBasedOnMoveDirection()
     {
-        float targetAngle = Mathf.Atan2(player.MoveDirection.x, player.MoveDirection.z) * Mathf.Rad2Deg;
-        player.transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+        //float targetAngle = Mathf.Atan2(player.MoveDirection.x, player.MoveDirection.z) * Mathf.Rad2Deg;
+        //player.transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+
+        // smooth turning based on the player's turn speed
+        Quaternion rotationToMoveDirection = Quaternion.LookRotation(player.MoveDirection);
+        rotationToMoveDirection.x = 0; rotationToMoveDirection.z = 0;   // this shouldn't be necessary once we have the player models in(?)
+        player.transform.rotation = Quaternion.RotateTowards(player.transform.rotation, rotationToMoveDirection, player.turnSpeed * Time.deltaTime);
 
     }
 }
