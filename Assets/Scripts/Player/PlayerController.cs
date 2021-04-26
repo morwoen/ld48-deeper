@@ -99,6 +99,10 @@ public class PlayerController : MonoBehaviour
           velocity.y = 0;
           animator.SetBool("IsGrounded", true);
         }
+        if (!controller.isGrounded)
+        {
+            animator.SetBool("IsGrounded", false);
+        }
 
         velocity.y += gravity * Time.deltaTime;
 
