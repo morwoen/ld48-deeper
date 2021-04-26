@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class SiloDoorOpener : MonoBehaviour
 {
+  public Animation animation;
+  private bool once = false;
 
-    public Animation animation;
-    void OnTriggerEnter(Collider other)
-{
-    animation.Play();
-    Debug.Log("editing");
-}
+  private void OnTriggerEnter(Collider other) {
+    if (!once) {
+      animation.Play();
+      once = true;
+    }
+  }
 }
