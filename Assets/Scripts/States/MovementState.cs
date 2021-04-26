@@ -21,7 +21,6 @@ public class MovementState : StateBase
     public override void OnExit()
     {
         player.canMove = false;
-        player.animator.SetFloat("MovementSpeed", 0f);
     }
 
     public override void OnUpdate() {
@@ -33,9 +32,10 @@ public class MovementState : StateBase
             {
                 SetMoveDirectionRelativeToCamera();
                 SetRotationBasedOnMoveDirection();
-                UpdateAnimator();
+                
             }
         }
+        UpdateAnimator();
     }
 
     private void SetMoveDirectionRelativeToCamera()
