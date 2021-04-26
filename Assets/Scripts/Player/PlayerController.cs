@@ -8,7 +8,6 @@ using FSM;
 public class PlayerController : MonoBehaviour
 {
     public CharacterController controller;
-    public Transform cameraTransform;
     public InputManager inputManager;
 
     [SerializeField] public float speed = 6f;
@@ -67,23 +66,16 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (inputManager.jumpInput && controller.isGrounded) {
-            Debug.Log("!!!Should be jumping!!!");
-        }
-
-        Debug.Log($"isGrounded: {controller.isGrounded}");
-        Debug.Log($"jumpInput: {inputManager.jumpInput}");
-
         fsm.OnUpdate();
-        //Debug.Log("FSM Current State: " + fsm.activeState);
-        //HandleJump();
+        Debug.Log("FSM Current State: " + fsm.activeState);
+        //Debug.Log($"isGrounded: {controller.isGrounded}");
+        //Debug.Log($"jumpInput: {inputManager.jumpInput}");
     }
 
     private void FixedUpdate()
     {
         InitialiseMoveDirection();
         HandleGravity();
-        SetMoveDirectionRelativeToCamera();
         fsm.OnFixedUpdate();
 
         controller.Move(MoveDirection * Time.fixedDeltaTime);
@@ -98,14 +90,6 @@ public class PlayerController : MonoBehaviour
     public void InitialiseMoveDirection()
     {
         MoveDirection = Vector3.zero;
-    }
-
-    public void SetMoveDirectionRelativeToCamera()
-    {
-        Vector3 projectedCameraForward = Vector3.ProjectOnPlane(cameraTransform.forward, Vector3.up);
-        Quaternion rotationToCamera = Quaternion.LookRotation(projectedCameraForward, Vector3.up);
-
-        MoveDirection = rotationToCamera * MoveDirection;
     }
 
     void HandleGravity()
