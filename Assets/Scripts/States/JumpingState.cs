@@ -17,11 +17,6 @@ public class JumpingState : StateBase
         player.animator.SetTrigger("Jump");
     }
 
-    public override void OnExit()
-    {
-    }
-
-
     public override void OnUpdate()
     {
         player.velocity.y = Mathf.Sqrt(player.jumpHeight * -2 * player.gravity);
