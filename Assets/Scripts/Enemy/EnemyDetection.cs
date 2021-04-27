@@ -13,7 +13,6 @@ public class EnemyDetection : MonoBehaviour
     private float movementSpeed = 1;
     [SerializeField]
     private Transform[] lookAtLocations;
-    [SerializeField] public Animator animator;
 
     private GameObject player;
     private GlobalAlertSystem gas;
