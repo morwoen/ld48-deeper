@@ -17,7 +17,7 @@ public class SpotlightRenderer : MonoBehaviour
   public float MaxDistance {
     get;
     private set;
-  } = 50;
+  } = 100;
 
 
   void Start() {
