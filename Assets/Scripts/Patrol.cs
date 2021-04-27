@@ -10,6 +10,7 @@ public class Patrol : MonoBehaviour
 
     private int destPoint;
     private NavMeshAgent agent;
+    [SerializeField] public Animator animator;
 
 
     // Start is called before the first frame update
@@ -26,6 +27,16 @@ public class Patrol : MonoBehaviour
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
         {
             GotoNextPoint();
+        }
+        if(agent.velocity.magnitude > 0)
+        {
+            animator.SetBool("IsMoving", true);
+            Debug.Log("agent.velocity.magnitude > 0");
+        }
+        else
+        {
+            animator.SetBool("IsMoving", false);
+            Debug.Log("agent.velocity.magnitude = 0");
         }
 
     }
