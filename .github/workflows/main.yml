@@ -25,7 +25,7 @@ jobs:
           # - StandaloneLinux64 # Build a Linux 64-bit standalone.
           # - iOS # Build an iOS player.
           # - Android # Build an Android player.
-          - WebGL # WebGL.
+          # - WebGL # WebGL.
     steps:
       - uses: actions/checkout@v2
         with:
