@@ -67,6 +67,7 @@ jobs:
         with:
           unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: ${{ matrix.targetPlatform }}
+          allowDirtyBuild: true
       - name: Zip Build 🗜️
         if: ${{ github.ref == 'refs/heads/main' && matrix.targetPlatform != 'WebGL' }}
         run: |
